@@ -1,9 +1,10 @@
 import express from 'express';
+import mongoose from 'mongoose';
 const app = express();
 app.use(express.json())
-app.listen(3005, (err=>{
-    console.log("Server running on port 3005");
-}));
+mongoose.connect("mongodb://localhost:27017/Authentication")
+    .then(() => console.log("✅ DB connected successfully"))
+    .catch(err => console.error("❌ DB connection error:", err));
 
 app.use('/',(req,res,next)=>{
     res.status(200).send('Not Found');
