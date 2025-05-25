@@ -1,11 +1,18 @@
-import mongoose from 'mongoose';
 import express from 'express';
-const app = express();
-app.use(express.json())
-mongoose.connect("mongodb://localhost:27017/Authentication")
-    .then(() => console.log("✅ DB connected successfully"))
-    .catch(err => console.error("❌ DB connection error:", err));
+import dotenv from 'dotenv';
+import connectDB from './database/mongo-user-data-store';
 
-app.use('/',(req,res,next)=>{
-    res.status(200).send('Not Found');
-})
+dotenv.config();
+const app = express();
+app.use(express.json());
+
+// Connect to database
+connectDB();
+
+app.use('/', (req, res) => {
+  res.status(404).send('Not Found');
+});
+
+// Optional: start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
